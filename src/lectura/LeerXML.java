@@ -1,6 +1,7 @@
 package lectura;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -22,6 +23,7 @@ public class LeerXML {
 		XPath xPath;
 		NodeList nodeList;
 		String path;
+		ArrayList<personas> personasList = new ArrayList<personas>();
 		
 		try {
 			db = dbf.newDocumentBuilder();
@@ -32,14 +34,19 @@ public class LeerXML {
 			
 			xPath = XPathFactory.newInstance().newXPath();
 			
-			path = "//persona[nombre='Julián']";
+			path = "//persona";
 			
 			nodeList = (NodeList) xPath.compile(path).evaluate(document, XPathConstants.NODESET);
 			
 			for(int i = 0; i < nodeList.getLength(); i++) {
 				Element elemento = (Element) nodeList.item(i);
 				
-				System.out.println(elemento.getTextContent());
+				
+				personasList.add(new personas(elemento.getElementsByTagName("nombre").item(0).getTextContent(), 
+						elemento.getElementsByTagName("apellido").item(0).getTextContent(), elemento.getElementsByTagName("apellido").item(1).getTextContent(),
+						elemento.getElementsByTagName("nacimiento").item(0).getTextContent()));
+
+				
 			}
 			
 			
